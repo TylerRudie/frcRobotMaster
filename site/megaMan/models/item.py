@@ -57,6 +57,9 @@ class item(models.Model):
 
     inFRC_BOM = models.BooleanField(default=True)
 
+    notes = models.TextField(blank=True,
+                             null=True)
+
     @property
     def calcTotalPrice(self):
         running = 0

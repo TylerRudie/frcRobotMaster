@@ -3,6 +3,7 @@ from frcRobotMaster.util.genKey import genKey
 
 measurementSet = (('ea', 'Each'),
                   ('in', 'Inch'),
+                  ('in^2', 'Square Inches'),
                   ('lb', 'Pounds')
                   )
 
