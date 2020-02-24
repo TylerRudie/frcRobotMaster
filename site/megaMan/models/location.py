@@ -1,14 +1,16 @@
 from django.db import models
 from exclusivebooleanfield.fields import ExclusiveBooleanField
 from frcRobotMaster.util.genKey import genKey
+from django.urls import reverse
+from django.utils.safestring import mark_safe
 from megaMan.util.frcBOM import frcBOM
 
-locationType=(('rb', 'Robot'),
-              ('as', 'Assembly'),
-              ('bi', 'Bin'),
-              ('to', 'Tote'),
-              ('sf', 'Shelf')
-              )
+locationType = (('rb', 'Robot'),
+                ('as', 'Assembly'),
+                ('bi', 'Bin'),
+                ('to', 'Tote'),
+                ('sf', 'Shelf')
+                )
 
 
 class location(models.Model):
@@ -40,6 +42,10 @@ class location(models.Model):
     dropDownWeight = models.PositiveIntegerField(default=30
                                                  )
 
+    thumbnail = models.ImageField(upload_to='qMaster/location/',
+                                  null=True,
+                                  blank=True)
+
     @property
     def FRC_Total(self):
         total = float(self.item_set.filter(inFRC_BOM=True).aggregate(models.Sum('totalPrice'))['totalPrice__sum'])
@@ -55,8 +61,37 @@ class location(models.Model):
         total = float(self.item_set.all().aggregate(models.Sum('totalWeight'))['totalWeight__sum'])
         return round(total, 2)
 
+    @property
+    def grandFRC_Total(self):
+        total = self.FRC_Total
+        for it in self.location_set.all():
+            total = total + it.FRC_Total
+        return total
+
+    @property
+    def grandTotalWeight(self):
+        total = self.totalWeight
+        for it in self.location_set.all():
+            total = total + it.totalWeight
+        return round(total, 4)
+
+    @property
+    def grandTotalPrice(self):
+        total = self.totalPrice
+        for it in self.location_set.all():
+            total = total + it.totalPrice
+        return round(total, 2)
+
+    @property
+    def getFRC_BOM_URL(self):
+        url = reverse('frc-bom', kwargs={'pk': self.locationID})
+        return mark_safe('<a href="{0}">{1} - FRC BOM</a>'.format(url, self.name))
+
+    getFRC_BOM_URL
+
     def frcBOM_Entry(self):
-        return self.item_set.filter(inFRC_BOM=True).values('details__shortDescription',
+        return self.item_set.filter(inFRC_BOM=True).values('details__name',
+                                                           'details__shortDescription',
                                                            'details__material__name',
                                                            'details__manufacturer__name',
                                                            'quantity',
@@ -64,6 +99,7 @@ class location(models.Model):
                                                            'details__marketPrice',
                                                            'totalPrice')
 
+    @property
     def frcBOM_fullListing(self):
         list = []
         for it in  self.location_set.all():

@@ -13,9 +13,18 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
+from megaMan import urls as mmUrls
+
+admin.site.site_header = 'FRC Robot Master'
+admin.site.site_title = 'FRC Robot Master'
+admin.site.index_title = 'Data Types'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('qMaster/', include(mmUrls)),
+    path('', RedirectView.as_view(url='admin/'))
 ]

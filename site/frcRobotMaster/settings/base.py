@@ -29,7 +29,6 @@ INSTALLED_APPS = [
 
     'import_export',
     'djangoql',
-    'mptt',
 
     'megaMan',
 ]

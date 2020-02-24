@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ location.owner.name }} {{ location.owner.event }} {% now "dMY" %}</title>
+    <style>
+        table.itemList,
+           th.itemList,
+           td.itemList {
+            width: 100%;
+            border: 1px solid black;
+            border-collapse: collapse;
+            padding: 3px;
+        }
+        table.itemList tr:nth-child(even) {
+          background-color: lightblue;
+        }
+        table.assemblyList{
+            width: 100%;
+        }
+        table.details{
+            width: 100%;
+        }
+        @page {
+            size: letter landscape;
+            margin: 2cm;
+        }
+    </style>
+</head>
+<body>
+    <table class="assemblyList">
+        <tr><td align="center">
+            <strong>
+             {% now "Y" %} <i>FIRST</i> Robotics Competition <br>
+             Bill of Materials
+            </strong>
+        </td></tr>
+
+        <tr><td>
+            <table class="details">
+              <tr>
+                <td width="30px"></td>
+                <td align="right">Team Name:</td>
+                <td> <u>{{ location.owner.name }}</u> </td>
+                <td align="right">Team #:</td>
+                <td><u>{{ location.owner.teamNumber }}</u></td>
+                <td align="right">Date:</td>
+                <td> <u> {% now "d M Y" %} </u></td>
+                <td width="30px"></td>
+              </tr>
+              <tr>
+                <td></td>
+                <td align="right">Event:</td>
+                <td><u>{{ location.owner.event }}</u></td>
+                <td align="right">City:</td>
+                <td><u>{{ location.owner.city }}</u></td>
+                <td align="right">State:</td>
+                <td><u>{{ location.owner.get_state_display }}</u></td>
+                <td></td>
+              </tr>
+            </table>
+        </td></tr>
+
+        {%  for assembly in location.frcBOM_fullListing %}
+            <tr><td> <strong>{{ assembly.name }} </strong> </td></tr>
+            <tr><td>
+                <table class="itemList">
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>Material</th>
+                        <th>Source</th>
+                        <th>Quantity</th>
+                        <th>Measurement</th>
+                        <th>Unit Price</th>
+                        <th>Total Price</th>
+                    </tr>
+                    {% for item in assembly.items %}
+                        <tr>
+                            <td>{{ item.details__name  }}</td>
+                            <td>{{ item.details__shortDescription  }}</td>
+                            <td align="center">{{ item.details__material__name }}</td>
+                            <td align="center"> {{ item.details__manufacturer__name }} </td>
+                            <td align="center"> {{ item.quantity }} </td>
+                            <td align="center"> {{ item.details__measurement }} </td>
+                            <td align="center"> ${{ item.details__marketPrice }} </td>
+                            <td align="right"> ${{ item.totalPrice }} </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </td></tr>
+            <tr><td align="right"> Subtotal: ${{ assembly.cost }}</td></tr>
+        {% endfor %}
+       <tr><td align="right">
+           <strong> Total: ${{ location.grandFRC_Total }} </strong>
+       </td></tr>
+    </table>
+
+</body>
+</html>

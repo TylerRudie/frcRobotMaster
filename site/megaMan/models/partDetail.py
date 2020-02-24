@@ -13,7 +13,7 @@ class partDetail(models.Model):
                               verbose_name= 'Part ID'
                               )
 
-    name = models.CharField(max_length= 50,
+    name = models.CharField(max_length= 20,
                             verbose_name='Part Name')
 
     manufacturerPartNumber = models.CharField(max_length= 150,
@@ -22,13 +22,13 @@ class partDetail(models.Model):
                                               blank=True,
                                               )
 
-    shortDescription = models.CharField(max_length= 150,
+    shortDescription = models.CharField(max_length= 60,
                                         verbose_name='Short Description',
                                         null=True,
                                         blank=True,
                                         )
 
-    longDescription = models.TextField(verbose_name= 'Long Description',
+    longDescription = models.TextField(verbose_name='Long Description',
                                        null=True,
                                        blank=True,
                                        )
@@ -69,6 +69,10 @@ class partDetail(models.Model):
                                  on_delete=models.SET_NULL,
                                  null= True,
                                  blank= True,)
+
+    thumbnail = models.ImageField(upload_to='qMaster/partDetail/',
+                                  null=True,
+                                  blank=True)
 
     def __str__(self):
         if self.name is not None and self.manufacturer is not None:

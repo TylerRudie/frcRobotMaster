@@ -2,7 +2,6 @@ from django.contrib import admin
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 from djangoql.admin import DjangoQLSearchMixin
-from mptt.admin import MPTTModelAdmin
 from frcRobotMaster.util.modelParser import modelParser
 
 from megaMan.models import location, item
@@ -36,14 +35,24 @@ class itemTabularInline(admin.TabularInline):
 class locationAdmin(DjangoQLSearchMixin, ImportExportModelAdmin):
     resource_class = locationResource
 
-    fields = mod + ['FRC_Total',
+    fields = mod + ['getFRC_BOM_URL',
+                    'FRC_Total',
+                    'grandFRC_Total',
                     'totalPrice',
-                    'totalWeight']
+                    'grandTotalPrice',
+                    'totalWeight',
+                    'grandTotalWeight',
 
-    readonly_fields = ['locationID',
+                    ]
+
+    readonly_fields = ['getFRC_BOM_URL',
+                       'locationID',
                        'FRC_Total',
                        'totalPrice',
-                       'totalWeight']
+                       'totalWeight',
+                       'grandFRC_Total',
+                       'grandTotalWeight',
+                       'grandTotalPrice']
 
     list_display = ['locationID',
                     'default',
@@ -52,6 +61,7 @@ class locationAdmin(DjangoQLSearchMixin, ImportExportModelAdmin):
                     'dropDownWeight',
                     'owner',
                     'partOf',
+                    'getFRC_BOM_URL',
                     ]
 
     ordering = ['location']
