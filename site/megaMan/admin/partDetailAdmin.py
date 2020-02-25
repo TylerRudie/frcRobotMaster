@@ -25,6 +25,16 @@ class itemTabularInline(admin.TabularInline):
                        'totalWeight',
                        'totalPrice'
                        ]
+    fields = ['itemID',
+              'location',
+              'serialNumber',
+              'purchasedPrice',
+              'purchasedDate',
+              'kop',
+              'quantity',
+              'totalPrice',
+              'totalWeight',
+              'inFRC_BOM']
 
 
 @admin.register(partDetail)

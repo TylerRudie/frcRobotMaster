@@ -14,7 +14,7 @@ class partDetail(models.Model):
                               verbose_name= 'Part ID'
                               )
 
-    name = models.CharField(max_length= 20,
+    name = models.CharField(max_length= 50,
                             verbose_name='Part Name')
 
     manufacturerPartNumber = models.CharField(max_length= 150,
@@ -23,7 +23,7 @@ class partDetail(models.Model):
                                               blank=True,
                                               )
 
-    shortDescription = models.CharField(max_length= 60,
+    shortDescription = models.CharField(max_length= 150,
                                         verbose_name='Short Description',
                                         null=True,
                                         blank=True,
@@ -62,8 +62,6 @@ class partDetail(models.Model):
 
     manufacturer = models.ForeignKey('megaMan.manufacturer',
                                      on_delete=models.CASCADE,
-                                     null=True,
-                                     blank=True,
                                      )
 
     category = models.ForeignKey('megaMan.category',
@@ -74,6 +72,10 @@ class partDetail(models.Model):
     thumbnail = models.ImageField(upload_to='qMaster/partDetail/',
                                   null=True,
                                   blank=True)
+
+    url = models.URLField(max_length=1000,
+                          null=True,
+                          blank=True)
 
     def __str__(self):
         if self.name is not None and self.manufacturer is not None:
