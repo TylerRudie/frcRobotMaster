@@ -16,7 +16,7 @@ class material(models.Model):
 
     def save(self, *args, **kwargs):
         while not self.materialID:
-            pk = genKey(prefix='CT-')
+            pk = genKey(prefix='MT-')
             if not material.objects.filter(pk=pk).exists():
                 self.materialID = pk
 

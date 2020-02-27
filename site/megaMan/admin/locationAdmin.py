@@ -29,6 +29,17 @@ class itemTabularInline(admin.TabularInline):
     can_delete = False
     extra = 0
     readonly_fields = ['totalPrice']
+    fields = ['itemID',
+              'location',
+              'serialNumber',
+              'purchasedPrice',
+              'purchasedDate',
+              'kop',
+              'quantity',
+              'totalPrice',
+              'totalWeight',
+              'inFRC_BOM']
+
 
 
 @admin.register(location)

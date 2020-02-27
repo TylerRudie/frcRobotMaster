@@ -47,6 +47,7 @@ class partDetailAdmin(DjangoQLSearchMixin, ImportExportModelAdmin):
 
     list_display = ['partID',
                     'name',
+                    'shortDescription',
                     'manufacturer',
                     'manufacturerPartNumber',
                     'marketPrice',
@@ -64,6 +65,7 @@ class partDetailAdmin(DjangoQLSearchMixin, ImportExportModelAdmin):
                    'category']
 
     list_editable = ['name',
+                     'shortDescription',
                      'manufacturer',
                      'manufacturerPartNumber',
                      'marketPrice',

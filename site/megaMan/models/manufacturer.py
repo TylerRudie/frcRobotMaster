@@ -19,7 +19,7 @@ class manufacturer(models.Model):
 
     def save(self, *args, **kwargs):
         while not self.manufacturerID:
-            pk = genKey(prefix='PD-')
+            pk = genKey(prefix='MA-')
             if not manufacturer.objects.filter(pk=pk).exists():
                 self.manufacturerID = pk
 

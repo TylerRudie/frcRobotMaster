@@ -48,17 +48,29 @@ class location(models.Model):
 
     @property
     def FRC_Total(self):
-        total = float(self.item_set.filter(inFRC_BOM=True).aggregate(models.Sum('totalPrice'))['totalPrice__sum'])
+        itemSet = self.item_set.filter(inFRC_BOM=True)
+        if itemSet is not None and len(itemSet) > 0:
+            total = float(itemSet.aggregate(models.Sum('totalPrice'))['totalPrice__sum'])
+        else:
+            total = 0
         return round(total, 2)
 
     @property
     def totalPrice(self):
-        total = float(self.item_set.all().aggregate(models.Sum('totalPrice'))['totalPrice__sum'])
+        itemSet = self.item_set.all()
+        if itemSet is not None and len(itemSet) > 0:
+            total = float(itemSet.aggregate(models.Sum('totalPrice'))['totalPrice__sum'])
+        else:
+            total = 0
         return round(total, 2)
 
     @property
     def totalWeight(self):
-        total = float(self.item_set.all().aggregate(models.Sum('totalWeight'))['totalWeight__sum'])
+        itemSet = self.item_set.all()
+        if itemSet is not None and len(itemSet) > 0:
+            total = float(itemSet.aggregate(models.Sum('totalWeight'))['totalWeight__sum'])
+        else:
+            total = 0
         return round(total, 2)
 
     @property
@@ -84,10 +96,11 @@ class location(models.Model):
 
     @property
     def getFRC_BOM_URL(self):
-        url = reverse('frc-bom', kwargs={'pk': self.locationID})
-        return mark_safe('<a href="{0}">{1} - FRC BOM</a>'.format(url, self.name))
-
-    getFRC_BOM_URL
+        if self.locationID is not None and len(self.locationID) > 0:
+            url = reverse('frc-bom', kwargs={'pk': self.locationID})
+            return mark_safe('<a href="{0}">{1} - FRC BOM</a>'.format(url, self.name))
+        else:
+            return '----'
 
     def frcBOM_Entry(self):
         return self.item_set.filter(inFRC_BOM=True).values('details__name',

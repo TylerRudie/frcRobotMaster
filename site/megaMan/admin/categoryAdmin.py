@@ -12,8 +12,8 @@ class categoryResource(resources.ModelResource):
         model = category
         skip_unchanged = True
         report_skipped = False
-        import_id_fields = ['materialID']
-        fields = ('materialID',
+        import_id_fields = ['categoryID']
+        fields = ('categoryID',
                   'name'
                   )
 
